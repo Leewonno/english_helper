@@ -1,0 +1,1 @@
+export {getExamData} from './getExamData'
