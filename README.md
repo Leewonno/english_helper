@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# English Helper
 
-## Getting Started
+영어 단어 암기를 반복 연습으로 돕는 간단한 Next.js 기반 학습 도구입니다. 사용자는 마크다운 표 형태로 단어와 뜻을 입력하고, 퀴즈 형식으로 의미를 맞히며 학습 성과를 곧바로 확인할 수 있습니다.
 
-First, run the development server:
+## 주요 기능
+- 마크다운 표 붙여넣기: 엑셀·노션 등에서 작성한 단어장을 그대로 붙여 넣어 퀴즈를 생성합니다.
+- 즉석 퀴즈 모드: 입력된 단어를 한 문제씩 표시하고 사용자가 입력한 뜻의 정오를 판별합니다.
+- 오답 노트: 학습 세션 종료 후 틀린 단어와 뜻을 표로 정리해 다시 확인할 수 있습니다.
+- 자동 진행 제어: 정답 여부를 알려준 뒤 2초 후 다음 문제로 이동하며, 모든 문제가 끝나면 새 세션을 시작할 준비를 합니다.
 
+## 빠르게 시작하기
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+브라우저에서 `http://localhost:3000`을 열면 앱이 실행됩니다.
+
+## 단어 데이터 입력 형식
+앱의 텍스트 영역에 아래와 같이 **마크다운 표 형태**로 단어를 붙여 넣으세요.
+
+```markdown
+| 단어 | 뜻 |
+|------|----|
+| apple | 사과 |
+| improve | 향상시키다 |
+| confident | 자신감 있는 |
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 첫 번째 행은 머리글(단어, 뜻)이어야 하며, 구분선(`|------|----|`)도 포함되어야 합니다.
+- 표 안의 공백과 줄바꿈은 자동으로 정리되며, 단어당 한 줄씩 입력되어야 합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 화면 흐름
+1. 텍스트 영역에 마크다운 표를 붙여 넣고 `시작` 버튼을 클릭합니다.
+2. 화면에 표시되는 단어의 뜻을 입력하고 `확인` 버튼이나 `Enter` 키로 제출합니다.
+3. 정답 여부가 즉시 표시되고, 2초 뒤 다음 문제가 자동으로 나타납니다.
+4. 모든 문제를 풀면 `틀린 단어` 표가 화면에 나타나 복습이 가능합니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 프로젝트 구조
+```text
+src/
+  app/
+    (page)/
+      page.tsx         # 학습 로직과 UI가 구현된 메인 페이지
+      layout.tsx       # 글로벌 메타데이터 및 레이아웃
+      globals.css      # 전역 스타일
+    assets/
+      css/home.module.css  # 페이지 전용 스타일
+    share/
+      lib/getExamData.ts   # 마크다운 표를 퀴즈 데이터로 변환
+      types/data.ts        # 단어 데이터 타입 정의
+```
 
-## Learn More
+## 기술 스택
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 4 (전역 스타일에 활용)
 
-To learn more about Next.js, take a look at the following resources:
+## 개발 스크립트
+- `npm run dev`: 개발 서버 실행
+- `npm run build`: 프로덕션 번들 생성
+- `npm run start`: 빌드 결과 실행
+- `npm run lint`: ESLint 검사
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 개선 아이디어
+- 오답 데이터 다운로드 또는 세션 저장 기능
+- 의미뿐 아니라 예문, 발음 등 추가 필드 지원
+- 난이도 조절을 위한 문제 셔플 및 제한 시간 옵션
